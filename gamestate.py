@@ -6,6 +6,9 @@ class GameState:
     playerX = 1
     playerO = -1
 
+    playerX_win_factor = 1
+    playerO_win_factor = 1
+
     def __init__(self, initial_board=np.zeros(shape=(3, 3)), initial_player=1):
         assert len(initial_board.shape) == 2 and \
                initial_board.shape[0] == 3 and \
@@ -51,14 +54,14 @@ class GameState:
 
     def is_game_over(self):
         # Is over if we have a winner
-        if self.get_game_result() == self.playerX or self.get_game_result() == self.playerO:
+        if self.get_game_result() == self.playerX*self.playerX_win_factor or self.get_game_result() == self.playerO*self.playerO_win_factor:
             return True
         # Is over if there are no legal moves
         return True if len(self.legal_moves()) == 0 else False
 
     def get_game_result(self):
         # if playerX is winner return 1
-        # if playerX is loser return -1
+        # if playerX is loser return -1 * lose_factor
         # otherwise return 0
 
         playerX_win_sum = self.playerX * 3
@@ -69,22 +72,22 @@ class GameState:
         col_sums = np.sum(self.board, axis=1)
         for row_sum in row_sums:
             if row_sum == playerX_win_sum:
-                return self.playerX
+                return self.playerX*self.playerX_win_factor
             if row_sum == playerO_win_sum:
-                return self.playerO
+                return self.playerO*self.playerO_win_factor
         for col_sum in col_sums:
             if col_sum == playerX_win_sum:
-                return self.playerX
+                return self.playerX*self.playerX_win_factor
             if col_sum == playerO_win_sum:
-                return self.playerO
+                return self.playerO*self.playerO_win_factor
         # Check for win in diagonals
         if self.board[0, 0] == self.playerX and self.board[1, 1] == self.playerX and self.board[2, 2] == self.playerX:
-            return self.playerX
+            return self.playerX*self.playerX_win_factor
         if self.board[0, 2] == self.playerX and self.board[1, 1] == self.playerX and self.board[2, 0] == self.playerX:
-            return self.playerX
+            return self.playerX*self.playerX_win_factor
         if self.board[0, 0] == self.playerO and self.board[1, 1] == self.playerO and self.board[2, 2] == self.playerO:
-            return self.playerO
+            return self.playerO*self.playerO_win_factor
         if self.board[0, 2] == self.playerO and self.board[1, 1] == self.playerO and self.board[2, 0] == self.playerO:
-            return self.playerO
+            return self.playerO*self.playerO_win_factor
 
         return 0
