@@ -7,7 +7,7 @@ class GameState:
     playerO = -1
 
     playerX_win_factor = 1
-    playerO_win_factor = 1
+    playerO_win_factor = 100
 
     def __init__(self, initial_board=np.zeros(shape=(3, 3)), initial_player=1):
         assert len(initial_board.shape) == 2 and \
@@ -28,7 +28,6 @@ class GameState:
 
         for row in range(3):
             print(f"| {convert(self.board[row, 0])} | {convert(self.board[row, 1])} | {convert(self.board[row, 2])} |")
-
 
     def is_move_legal(self, move):
         if self.next_player != move.player:
@@ -53,11 +52,7 @@ class GameState:
         return moves
 
     def is_game_over(self):
-        # Is over if we have a winner
-        if self.get_game_result() == self.playerX*self.playerX_win_factor or self.get_game_result() == self.playerO*self.playerO_win_factor:
-            return True
-        # Is over if there are no legal moves
-        return True if len(self.legal_moves()) == 0 else False
+        return self.get_game_result() is not None
 
     def get_game_result(self):
         # if playerX is winner return 1
@@ -90,4 +85,8 @@ class GameState:
         if self.board[0, 2] == self.playerO and self.board[1, 1] == self.playerO and self.board[2, 0] == self.playerO:
             return self.playerO*self.playerO_win_factor
 
-        return 0
+        if np.all(self.board != 0):
+            return 0 # its a tie
+
+        # if not over - no result
+        return None

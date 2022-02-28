@@ -1,5 +1,4 @@
 import numpy as np
-import copy
 
 class MCTSNode:
     def __init__(self, game_state, parent=None, move=None):
@@ -56,10 +55,11 @@ class MCTSNode:
         return child_node
 
     def rollout(self):
-        simulation_state = copy.deepcopy(self.game_state)
+        simulation_state = self.game_state #copy.deepcopy(self.game_state)
         # Simulate game until terminal state
         while not simulation_state.is_game_over():
-            move = self.rollout_policy_choose_move(simulation_state.legal_moves())
+            legal_moves = simulation_state.legal_moves()
+            move = self.rollout_policy_choose_move(legal_moves)
             simulation_state = simulation_state.make_move(move)
         # Return result of match
         return simulation_state.get_game_result()

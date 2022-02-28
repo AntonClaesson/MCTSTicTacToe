@@ -25,7 +25,7 @@ def main():
     while not current_node.game_state.is_game_over():
 
         mcts = MonteCarloTreeSearch(node=current_node)
-        best_move, new_node = mcts.get_best_move(5000)
+        best_move, new_node = mcts.get_best_move(10000)
         current_node = new_node
         current_node.game_state.print_board()
         print("\n")

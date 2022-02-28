@@ -12,7 +12,7 @@ class MonteCarloTreeSearch:
             selected_child_node = self.traverse()
             game_result = selected_child_node.rollout()
             selected_child_node.backprop(game_result)
-        # Given the best child, get the corresponding move and return it
+        # Given the best child (exploitation only), get the corresponding move and return it
         best_child = self.root.get_best_child(trade_off_param=0)
         best_move = best_child.corresponding_move
         return best_move, best_child
