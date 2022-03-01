@@ -39,9 +39,9 @@ def main():
             print("\n")
 
     game_result = current_node.game_state.get_game_result()
-    if game_result == GameState.playerX:
+    if game_result == GameState.playerX*GameState.playerX_win_factor:
         print("X wins!")
-    elif game_result == GameState.playerO:
+    elif game_result == GameState.playerO*GameState.playerO_win_factor:
         print("O wins!")
     else:
         print("It is a tie!")
